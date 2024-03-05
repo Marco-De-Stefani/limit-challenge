@@ -1,4 +1,4 @@
-package com.deste.knowledgegraph;
+package com.deste.gateway.knowledgegraph;
 
 import jakarta.persistence.*;
 

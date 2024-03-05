@@ -1,4 +1,4 @@
-package com.deste.api;
+package com.deste.apis;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

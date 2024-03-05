@@ -1,0 +1,9 @@
+### basic http calls to api
+http://localhost:8081/white
+###
+http://localhost:8081/black
+
+
+### call through gateway
+http://localhost:8080/white
+Authorization: myBearer

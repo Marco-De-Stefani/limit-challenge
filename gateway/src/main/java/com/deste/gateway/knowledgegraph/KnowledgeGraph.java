@@ -1,6 +1,6 @@
-package com.deste.knowledgegraph;
+package com.deste.gateway.knowledgegraph;
 
-import com.deste.user.User;
+import com.deste.gateway.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.deste.user;
+package com.deste.gateway.user;
 
 import lombok.RequiredArgsConstructor;
 
