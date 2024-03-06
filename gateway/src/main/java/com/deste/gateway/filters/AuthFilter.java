@@ -1,11 +1,7 @@
 package com.deste.gateway.filters;
 
-import com.deste.gateway.domain.knowledgegraph.Key;
-import com.deste.gateway.domain.knowledgegraph.KeyRepository;
-import com.deste.gateway.domain.knowledgegraph.KnowledgeGraph;
-import com.deste.gateway.domain.knowledgegraph.KnowledgeGraphRepository;
-import com.deste.gateway.domain.user.User;
-import com.deste.gateway.domain.user.UserRepository;
+import com.deste.gateway.domain.knowledgegraph.KeyService;
+import com.deste.gateway.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -22,9 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthFilter implements GatewayFilter {
 
-    private final UserRepository userRepo;
-    private final KeyRepository keyRepo;
-    private final KnowledgeGraphRepository knowledgeGraphRepo;
+    private final UserService userService;
+    private final KeyService keyService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -50,16 +45,10 @@ public class AuthFilter implements GatewayFilter {
         String[] split = authValueString.split(" ");
         if (split.length != 2) return false;
         if (split[0].equals("Bearer")) {
-            List<User> users = userRepo.findByEmail(split[1]);
-            if (users != null && users.size() == 1)
-                return true;
+            return userService.isValidUser(split[1]);
         }
         if (split[0].equals("Key")) {
-            List<Key> keys = keyRepo.findByName(split[1]);
-            if (keys != null && keys.size() == 1) {
-                Key key = keys.get(0);
-                return key.getKnowledgeGraph() != null && key.getKnowledgeGraph().getUser() != null;
-            }
+            return keyService.isValidKey(split[1]);
         }
         return false;
     }
