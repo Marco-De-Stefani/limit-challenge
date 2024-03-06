@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @Builder
@@ -24,7 +26,6 @@ public class Key {
     @JoinColumn(name = "kg_id", nullable = false)
     private KnowledgeGraph knowledgeGraph;
 
-    @OneToOne
-    @JoinColumn(name = "limit_id", referencedColumnName = "id")
-    private Limit limit;
+//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+//    private Set<Limit> limits;
 }

@@ -13,14 +13,14 @@ public class GatewayConfiguration {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder, RateLimitFilter rateLimitFilter, AuthFilter authFilter) {
         return builder.routes()
                 .route("add_group_white", r -> r.path("/white")
-                        .filters(f -> f.addResponseHeader("X-API-Group", "api_white")
+                        .filters(f -> f
+//                                        .addResponseHeader("X-API-Group", "api_white")
                                 .filter(authFilter)
-                                .filter(rateLimitFilter)
-                        )
-
+                                .filter(rateLimitFilter))
                         .uri("http://localhost:8081"))
                 .route("add_group_black", r -> r.path("/black")
-                        .filters(f -> f.addResponseHeader("X-API-Group", "api_black")
+                        .filters(f -> f
+//                                .addResponseHeader("X-API-Group", "api_black")
                                 .filter(authFilter)
                                 .filter(rateLimitFilter))
                         .uri("http://localhost:8081"))

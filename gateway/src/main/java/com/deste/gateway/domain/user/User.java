@@ -22,11 +22,11 @@ public class User {
     @GeneratedValue
     private Long id;
     private String email;
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<KnowledgeGraph> knowledgeGraphs;
 
-    @OneToOne
-    @JoinColumn(name = "limit_id", referencedColumnName = "id")
-    private Limit limit;
+//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+//    private Set<KnowledgeGraph> knowledgeGraphs;
+
+//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+//    private Set<Limit> limits;
 
 }

@@ -17,9 +17,11 @@ public class KnowledgeGraph {
     @Id
     @GeneratedValue
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
 //    @OneToMany(mappedBy = "knowledgeGraph", fetch = FetchType.LAZY)
 //    private Set<Key> keys;
 }

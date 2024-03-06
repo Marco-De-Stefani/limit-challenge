@@ -11,3 +11,7 @@ Authorization: Bearer mario@rossi.it
 ### call through gateway
 http://localhost:8080/white
 Authorization: Key keyFake
+
+### call through gateway for black
+http://localhost:8080/black
+Authorization: Bearer mario@rossi.it

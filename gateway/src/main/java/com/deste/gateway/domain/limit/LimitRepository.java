@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LimitRepository extends JpaRepository<Limit, Long> {
-    List<Limit> findByKey(Key key);
+    List<Limit> findByKeyAndApiGroup(Key key, String apiGroup);
 
-    List<Limit> findByUser(User user);
+    List<Limit> findByUserAndApiGroup(User user, String apiGroup);
 }

@@ -12,12 +12,11 @@ public class KeyService {
     private final KeyRepository keyRepo;
     private final LimitService limitService;
 
-
-    public boolean isKeyLimitReached(String keyName) {
+    public boolean isKeyLimitReached(String keyName, String apiGroup) {
         List<Key> keys = keyRepo.findByName(keyName);
         if (keys != null && keys.size() == 1) {
             Key key = keys.get(0);
-            return limitService.isKeyLimitReached(key);
+            return limitService.isKeyLimitReached(key, apiGroup);
         }
         return false;
     }
@@ -31,10 +30,18 @@ public class KeyService {
         return false;
     }
 
-    public String getConsumedFor(String keyName) {
+    public String getConsumedFor(String keyName, String apiGroup) {
         List<Key> keys = keyRepo.findByName(keyName);
         if (keys.size() == 1) {
-            return limitService.getRemainingLimit(keys.get(0));
+            return limitService.getRemainingLimit(keys.get(0), apiGroup);
+        }
+        return String.valueOf(0L);
+    }
+
+    public String getTotalFor(String keyName, String apiGroup) {
+        List<Key> keys = keyRepo.findByName(keyName);
+        if (keys.size() == 1) {
+            return limitService.getTotalLimit(keys.get(0), apiGroup);
         }
         return String.valueOf(0L);
     }

@@ -10,10 +10,14 @@ import com.deste.gateway.domain.user.User;
 import com.deste.gateway.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class PopulateDb implements CommandLineRunner {
     private final UserRepository userRepo;
     private final KeyRepository keyRepo;
@@ -22,30 +26,28 @@ public class PopulateDb implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User marioRossi = User.builder().id(1L).email("mario@rossi.it").build();
-        User giovanniBianchi = User.builder().id(2L).email("giovanni@bianchi.it").build();
-        userRepo.save(marioRossi);
-        userRepo.save(giovanniBianchi);
+        User marioRossi = User.builder().email("mario@rossi.it").build();
+        User giovanniBianchi = User.builder().email("giovanni@bianchi.it").build();
+        marioRossi = userRepo.save(marioRossi);
+        giovanniBianchi = userRepo.save(giovanniBianchi);
 
-        KnowledgeGraph kgGiovanniBiachi = KnowledgeGraph.builder().id(1L).user(giovanniBianchi).build();
-        Key keyGiovanniBianchi = Key.builder().id(1L).name("keyFake").knowledgeGraph(kgGiovanniBiachi).build();
-        kgRepo.save(kgGiovanniBiachi);
-        keyRepo.save(keyGiovanniBianchi);
+        KnowledgeGraph kgGiovanniBiachi = KnowledgeGraph.builder().user(giovanniBianchi).build();
+        kgGiovanniBiachi = kgRepo.save(kgGiovanniBiachi);
+        Key keyGiovanniBianchi = Key.builder().name("keyFake").knowledgeGraph(kgGiovanniBiachi).build();
+        keyGiovanniBianchi = keyRepo.save(keyGiovanniBianchi);
 
-        Limit limitForMario = Limit.builder().user(marioRossi).setLimit(10L).remainingLimit(10L).build();
-        limitRepo.save(limitForMario);
-        Limit limitForGiovanni = Limit.builder().user(giovanniBianchi).setLimit(10L).remainingLimit(10L).build();
-        limitRepo.save(limitForGiovanni);
+        Limit limitForMarioWhite = Limit.builder().user(marioRossi).setLimit(10L).remainingLimit(10L).apiGroup("api_white").build();
+        Limit limitForMarioBlack = Limit.builder().user(marioRossi).setLimit(10L).remainingLimit(10L).apiGroup("api_black").build();
+        limitRepo.save(limitForMarioWhite);
+        limitRepo.save(limitForMarioBlack);
 
-        Limit limitForGiovanniKey = Limit.builder().key(keyGiovanniBianchi).setLimit(2L).remainingLimit(2L).build();
+        Limit limitForGiovanniWhite = Limit.builder().user(giovanniBianchi).setLimit(10L).remainingLimit(10L).apiGroup("api_white").build();
+        Limit limitForGiovanniBlack = Limit.builder().user(giovanniBianchi).setLimit(10L).remainingLimit(10L).apiGroup("api_black").build();
+        limitRepo.save(limitForGiovanniWhite);
+        limitRepo.save(limitForGiovanniBlack);
+
+        Limit limitForGiovanniKey = Limit.builder().key(keyGiovanniBianchi).setLimit(2L).remainingLimit(2L).apiGroup("api_white").build();
         limitRepo.save(limitForGiovanniKey);
 
-        marioRossi.setLimit(limitForMario);
-        giovanniBianchi.setLimit(limitForGiovanni);
-        keyGiovanniBianchi.setLimit(limitForGiovanniKey);
-
-        userRepo.save(marioRossi);
-        userRepo.save(giovanniBianchi);
-        keyRepo.save(keyGiovanniBianchi);
     }
 }

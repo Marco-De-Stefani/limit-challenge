@@ -19,14 +19,21 @@ public class Limit {
     @Id
     private Long id;
 
-    @OneToOne(mappedBy = "limit")
+    @Column
+    private String apiGroup;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "limit")
+    @ManyToOne
+    @JoinColumn(name = "key_id")
     private Key key;
 
+    @Column
     private Long setLimit;
 
+    @Column
     private Long remainingLimit;
 
 }

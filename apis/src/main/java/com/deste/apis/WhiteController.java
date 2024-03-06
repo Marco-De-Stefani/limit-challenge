@@ -10,7 +10,11 @@ public class WhiteController {
 
     @GetMapping("/white")
     public ResponseEntity<String> white() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-API-Cost", "1");
+        headers.add("X-API-Group", "api_white");
         return ResponseEntity.ok()
+                .headers(headers)
                 .body("White");
     }
 }
