@@ -1,4 +1,4 @@
-package com.deste.gateway.knowledgegraph;
+package com.deste.gateway.domain.knowledgegraph;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

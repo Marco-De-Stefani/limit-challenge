@@ -6,4 +6,8 @@ http://localhost:8081/black
 
 ### call through gateway
 http://localhost:8080/white
-Authorization: myBearer
+Authorization: Bearer mario@rossi.it
+
+### call through gateway
+http://localhost:8080/white
+Authorization: Key keyFake

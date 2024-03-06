@@ -1,14 +1,18 @@
-package com.deste.gateway.knowledgegraph;
+package com.deste.gateway.domain.knowledgegraph;
 
-import com.deste.gateway.user.User;
+import com.deste.gateway.domain.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import java.util.Set;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "KNOWLEDGE_GRAPH")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "knowledge_graph")
 public class KnowledgeGraph {
     @Id
     @GeneratedValue
