@@ -1,6 +1,5 @@
 package com.deste.gateway.domain.knowledgegraph;
 
-import com.deste.gateway.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

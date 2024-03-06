@@ -1,7 +1,6 @@
 package com.deste.gateway.domain.knowledgegraph;
 
-import com.deste.gateway.domain.limit.Limit;
-import com.deste.gateway.domain.limit.LimitRepository;
+import com.deste.gateway.domain.limit.LimitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +10,15 @@ import java.util.List;
 @Service
 public class KeyService {
     private final KeyRepository keyRepo;
-    private final LimitRepository limitRepo;
+    private final LimitService limitService;
 
 
     public boolean isKeyLimitReached(String keyName) {
+        List<Key> keys = keyRepo.findByName(keyName);
+        if (keys != null && keys.size() == 1) {
+            Key key = keys.get(0);
+            return limitService.isKeyLimitReached(key);
+        }
         return false;
     }
 
@@ -30,8 +34,7 @@ public class KeyService {
     public String getConsumedFor(String keyName) {
         List<Key> keys = keyRepo.findByName(keyName);
         if (keys.size() == 1) {
-            List<Limit> limits = limitRepo.findByKey(keys.get(0));
-            if (limits != null && limits.get(0) != null) return String.valueOf(limits.get(0).getRemainingLimit());
+            return limitService.getRemainingLimit(keys.get(0));
         }
         return String.valueOf(0L);
     }

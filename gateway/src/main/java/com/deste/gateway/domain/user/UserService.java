@@ -1,8 +1,6 @@
 package com.deste.gateway.domain.user;
 
-import com.deste.gateway.domain.knowledgegraph.Key;
-import com.deste.gateway.domain.limit.Limit;
-import com.deste.gateway.domain.limit.LimitRepository;
+import com.deste.gateway.domain.limit.LimitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +10,14 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepo;
-    private final LimitRepository limitRepo;
+    private final LimitService limitService;
 
     public boolean isUserLimitReached(String email) {
+        List<User> users = userRepo.findByEmail(email);
+        if (users != null && users.size() == 1) {
+            User user = users.get(0);
+            return limitService.isUserLimitReached(user);
+        }
         return false;
     }
 
@@ -27,8 +30,7 @@ public class UserService {
     public String getConsumedFor(String email) {
         List<User> users = userRepo.findByEmail(email);
         if (users.size() == 1) {
-            List<Limit> limits = limitRepo.findByUser(users.get(0));
-            if (limits != null && limits.get(0) != null) return String.valueOf(limits.get(0).getRemainingLimit());
+            return limitService.getRemainingLimit(users.get(0));
         }
         return String.valueOf(0L);
     }

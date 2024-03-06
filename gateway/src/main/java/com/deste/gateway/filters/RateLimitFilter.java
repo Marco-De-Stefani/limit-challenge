@@ -1,9 +1,6 @@
 package com.deste.gateway.filters;
 
-import com.deste.gateway.domain.knowledgegraph.Key;
 import com.deste.gateway.domain.knowledgegraph.KeyService;
-import com.deste.gateway.domain.user.User;
-import com.deste.gateway.domain.user.UserRepository;
 import com.deste.gateway.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -40,7 +36,7 @@ public class RateLimitFilter implements GatewayFilter {
             if (userService.isUserLimitReached(email)) {
                 response.setStatusCode(HttpStatus.valueOf(402));
                 return response.setComplete();
-            }else {
+            } else {
                 response.getHeaders().add("X-API-Group-Consumed", userService.getConsumedFor(email));
 
                 //todo
@@ -51,9 +47,10 @@ public class RateLimitFilter implements GatewayFilter {
             if (keyService.isKeyLimitReached(keyName)) {
                 response.setStatusCode(HttpStatus.valueOf(402));
                 return response.setComplete();
-            }else {
-                response.getHeaders().add("X-API-Group-Consumed", keyService.getConsumedFor(keyName));
-                //todo
+            } else {
+                String consumedFor = keyService.getConsumedFor(keyName);
+                if (consumedFor != null)
+                    response.getHeaders().add("X-API-Group-Consumed", consumedFor);
             }
         }
 
