@@ -49,9 +49,10 @@ class UserServiceTest {
         var user = User.builder().build();
         when(userRepository.findByEmail("email")).thenReturn(List.of(user));
         when(limitService.getRemainingLimit(user, "api_white")).thenReturn("1");
+        when(limitService.getTotalLimit(user, "api_white")).thenReturn("10");
 
         String result = userService.getConsumedFor("email", "api_white");
-        assertEquals("1",result);
+        assertEquals("9",result);
     }
 
     @Test

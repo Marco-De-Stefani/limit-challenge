@@ -30,7 +30,11 @@ public class UserService {
     public String getConsumedFor(String email, String apiGroup) {
         List<User> users = userRepo.findByEmail(email);
         if (users.size() == 1) {
-            return limitService.getRemainingLimit(users.get(0), apiGroup);
+            User user = users.get(0);
+            long total = Long.parseLong(limitService.getTotalLimit(user, apiGroup));
+            long remaining = Long.parseLong(limitService.getRemainingLimit(user, apiGroup));
+            long consumed = total - remaining;
+            return String.valueOf(consumed);
         }
         return String.valueOf(0L);
     }
@@ -40,5 +44,6 @@ public class UserService {
         if (users.size() == 1) {
             return limitService.getTotalLimit(users.get(0), apiGroup);
         }
-        return String.valueOf(0L);    }
+        return String.valueOf(0L);
+    }
 }

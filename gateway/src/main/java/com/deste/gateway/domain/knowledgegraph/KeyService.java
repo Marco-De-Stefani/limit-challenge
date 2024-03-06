@@ -33,7 +33,11 @@ public class KeyService {
     public String getConsumedFor(String keyName, String apiGroup) {
         List<Key> keys = keyRepo.findByName(keyName);
         if (keys.size() == 1) {
-            return limitService.getRemainingLimit(keys.get(0), apiGroup);
+            Key key = keys.get(0);
+            long total = Long.parseLong(limitService.getTotalLimit(key, apiGroup));
+            long remaining = Long.parseLong(limitService.getRemainingLimit(key, apiGroup));
+            long consumed = total - remaining;
+            return String.valueOf(consumed);
         }
         return String.valueOf(0L);
     }

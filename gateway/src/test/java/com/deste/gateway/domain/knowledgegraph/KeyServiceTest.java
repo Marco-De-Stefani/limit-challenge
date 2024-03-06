@@ -52,7 +52,8 @@ class KeyServiceTest {
     void getConsumedForCallsRepoAndReturns() {
         var key = Key.builder().build();
         when(keyRepo.findByName("keyName")).thenReturn(List.of(key));
-        when(limitService.getRemainingLimit(key, "api_white")).thenReturn("1");
+        when(limitService.getRemainingLimit(key, "api_white")).thenReturn("9");
+        when(limitService.getTotalLimit(key, "api_white")).thenReturn("10");
 
         String result = keyService.getConsumedFor("keyName", "api_white");
         assertEquals("1",result);
